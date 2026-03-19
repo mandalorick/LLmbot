@@ -1,10 +1,12 @@
 from litellm import completion
+from config import MODEL, API_BASE
+
 
 class User_chat_Ollama:
     def __init__(self):
         self.messages = []
-        self.MODEL = "ollama_chat/gemma3:4b"
-        self.API_BASE = "http://localhost:11434"
+        self.MODEL = MODEL
+        self.API_BASE = API_BASE
 
     def add_question(self, question: str) -> str:
         self.messages.append({"role": "user", "content": question})
