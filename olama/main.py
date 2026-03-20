@@ -1,5 +1,6 @@
 from litellm import completion
 from config import MODEL, API_BASE
+import os
 
 
 class User_chat_Ollama:
@@ -7,6 +8,7 @@ class User_chat_Ollama:
         self.messages = []
         self.MODEL = MODEL
         self.API_BASE = API_BASE
+        self.analze_files_in_directory()
 
     def add_question(self, question: str) -> str:
         self.messages.append({"role": "user", "content": question})
@@ -14,7 +16,7 @@ class User_chat_Ollama:
             model=self.MODEL,
             messages=self.messages,
             api_base=self.API_BASE,
-            request_timeout=120,
+            request_timeout=360,
         )
         answer = response.choices[0].message.content
         self.messages.append({"role": "assistant", "content": answer})
@@ -44,4 +46,8 @@ class User_chat_Ollama:
                     return "Сообщение было удалено!"
         self.messages = []
         return "Весь чат был удален!"
-
+    def analze_files_in_directory(self, *args):
+        for i in os.listdir('../data'):
+            if ".txt" in i:
+                file = open(f"../data/{i}", encoding='utf-8')
+                return self.add_question(file.read())
