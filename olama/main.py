@@ -1,7 +1,7 @@
 from litellm import completion
 from config import MODEL, API_BASE
 import os
-
+import docx
 
 class User_chat_Ollama:
     def __init__(self):
@@ -46,8 +46,36 @@ class User_chat_Ollama:
                     return "Сообщение было удалено!"
         self.messages = []
         return "Весь чат был удален!"
+
+    def read_docx_complete(self, file_path):
+        try:
+            doc = docx.Document(file_path)
+            result = []
+            for paragraph in doc.paragraphs:
+                if paragraph.text.strip():
+                    result.append(paragraph.text)
+
+            for table in doc.tables:
+                for row in table.rows:
+                    row_text = []
+                    for cell in row.cells:
+                        cell_text = "\n".join([p.text for p in cell.paragraphs])
+                        row_text.append(cell_text.strip())
+                    if any(row_text):
+                        result.append(" | ".join(row_text))
+
+            return "\n".join(result)
+
+        except Exception as e:
+            return f"Ошибка: {e}"
+
+
     def analze_files_in_directory(self, *args):
         for i in os.listdir('../data'):
             if ".txt" in i:
                 file = open(f"../data/{i}", encoding='utf-8')
-                return self.add_question(file.read())
+                self.add_question(file.read())
+            if ".docx" in i:
+                self.add_question(self.read_docx_complete(f"../data/{i}"))
+
+        return True
