@@ -1,5 +1,12 @@
 # User Chat with Ollama
+Необходимы следующие зависимости  
+```
+pip install litellm
+pip install aiogram
+pip install python-docx
+```
 
+---
 После создания класса есть 2 метода
 Все переписки пользователей сохраняются
 
