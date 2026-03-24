@@ -71,11 +71,11 @@ class User_chat_Ollama:
 
 
     def analze_files_in_directory(self, *args):
-        for i in os.listdir('../data'):
+        for i in os.listdir('data'):
             if ".txt" in i:
-                file = open(f"../data/{i}", encoding='utf-8')
+                file = open(f"data/{i}", encoding='utf-8')
                 self.add_question(file.read())
             if ".docx" in i:
-                self.add_question(self.read_docx_complete(f"../data/{i}"))
+                self.add_question(self.read_docx_complete(f"data/{i}"))
 
         return True
